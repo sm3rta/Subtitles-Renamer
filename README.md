@@ -6,4 +6,5 @@ Say you have a folder containing 10 episodes of your favorite series and their s
 ![example image](https://i.imgur.com/VV6K9ro.png)
 
 No more dragging and dropping!
+
 Disclaimer: the video files and the subtitle files must be in the same order (this script is not an oracle, probably you won't have to worry about this but make sure the renaming process was successful, if not, you can undo it easily).
