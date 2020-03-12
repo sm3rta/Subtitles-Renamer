@@ -1,7 +1,7 @@
 import os
 from time import sleep
 from shutil import rmtree, copy2
-#print("This tool is developed by Smarta")  #A bit cheesy
+# print("This tool is developed by Smarta")  #A bit cheesy
 
 sub_exts = ['aqt',
             '.ass',
@@ -22,7 +22,7 @@ sub_exts = ['aqt',
             '.usf']
 epi_exts = ['3g2',
             '.3gp',
-            '.abi',
+            '.avi',
             '.amv',
             '.asf',
             '.drc',
@@ -61,10 +61,11 @@ epi_exts = ['3g2',
             '.wmv',
             '.yuv']
 
+
 def undo(changes):
     for pair in changes:
         os.rename(pair[1], pair[0])
-    input() #keep window open
+
 
 folder = input(
     "Please enter the full path to the folder containing both episodes and subtitles\n")
@@ -74,9 +75,9 @@ subs, epis = [], []
 
 for file in files:
     _, ext = os.path.splitext(file)
-    if ext in sub_exts:
+    if ext.lower() in sub_exts:
         subs.append(file)
-    elif ext in epi_exts:
+    elif ext.lower() in epi_exts:
         epis.append(file)
 
 if len(subs) == 0 and len(epis) == 0:
@@ -88,13 +89,13 @@ elif len(epis) == 0:
 elif len(subs) != len(epis):
     print("The number of videos isn't equal to that of subtitles.")
 else:
-    #ask
+    # ask
     choice = input(
         "Type V to rename episodes to subtitles or S (or anything) to rename subtitles to episodes: ")
     index = 0
     changes = []
     try:
-        #taking a backup first
+        # taking a backup first
         print("Taking a backup of subtitles")
         if "subtitles backup" in os.listdir(folder):
             rmtree(os.path.join(folder, "subtitles backup"))
@@ -105,35 +106,36 @@ else:
                 folder, "subtitles backup"))
 
         if choice.lower() != 'v':
-            #rename subs
+            # rename subs
             while index < len(epis):
                 _, sub_ext = os.path.splitext(subs[index])
                 epi_name, _ = os.path.splitext(epis[index])
-                print('{0: <60}'.format(subs[index]), "->", epi_name+sub_ext)
+                print(
+                    '{0: <{maxLength}} -> {1}'.format(subs[index], epi_name+sub_ext, maxLength=len(max(subs))+1))
                 os.rename(folder+"\\"+subs[index],
                           folder+"\\"+epi_name+sub_ext)
                 changes.append(
                     (folder+"\\"+subs[index], folder+"\\"+epi_name+sub_ext))
                 index += 1
         else:
-            #rename episodes
+            # rename episodes
             while index < len(epis):
                 _, epi_ext = os.path.splitext(epis[index])
                 sub_name, _ = os.path.splitext(subs[index])
-                print('{0: <60} -> {1}'.format(epis[index], sub_name+epi_ext))
+                print(
+                    '{0: <{maxLength}} -> {1}'.format(epis[index], sub_name+epi_ext, maxLength=len(max(epis))+1))
                 os.rename(folder+"\\"+epis[index],
                           folder+"\\"+sub_name+epi_ext)
                 changes.append(
                     (folder+"\\"+epis[index], folder+"\\"+sub_name+epi_ext))
                 index += 1
         choice = input(
-        "Press Y to undo (e.g. if the renaming process wasn't correct): ")
+            "Press Y to undo (e.g. if the renaming process wasn't correct) or Enter to exit: ")
         if choice.lower() == 'y':
             undo(changes)
 
     except:
-        #undo
+        # undo
         print("An error occured. Most likely some files are already in use. Close any programs that might be using any video file or subtitle file and try again.\nUndoing changes now...\n")
         undo(changes)
-        print("Done")
-
+        input("Done. Press Enter to exit")  # keep window open
