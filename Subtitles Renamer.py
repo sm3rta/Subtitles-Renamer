@@ -111,7 +111,7 @@ else:
                 _, sub_ext = os.path.splitext(subs[index])
                 epi_name, _ = os.path.splitext(epis[index])
                 print(
-                    '{0: <{maxLength}} -> {1}'.format(subs[index], epi_name+sub_ext, maxLength=len(max(subs))+1))
+                    '{0: <{maxLength}} -> {1}'.format(subs[index], epi_name+sub_ext, maxLength=len(max(subs, key=len))))
                 os.rename(folder+"\\"+subs[index],
                           folder+"\\"+epi_name+sub_ext)
                 changes.append(
@@ -123,7 +123,7 @@ else:
                 _, epi_ext = os.path.splitext(epis[index])
                 sub_name, _ = os.path.splitext(subs[index])
                 print(
-                    '{0: <{maxLength}} -> {1}'.format(epis[index], sub_name+epi_ext, maxLength=len(max(epis))+1))
+                    '{0: <{maxLength}} -> {1}'.format(epis[index], sub_name+epi_ext, maxLength=len(max(epis, key=len))))
                 os.rename(folder+"\\"+epis[index],
                           folder+"\\"+sub_name+epi_ext)
                 changes.append(
